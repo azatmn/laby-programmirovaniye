@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  # PHP-FPM сервис
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile.php
+    container_name: php_app
+    volumes:
+      - ./src:/var/www/html
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  # Nginx сервис
+  nginx:
+    image: nginx:latest
+    container_name: nginx_app
+    ports:
+      - "80:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - php
+    networks:
+      - app-network
+    restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge
