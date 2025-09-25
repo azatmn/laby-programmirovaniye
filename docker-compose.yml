@@ -5,8 +5,8 @@ services:
   php:
     build:
       context: .
-      dockerfile: Dockerfile.php
-    container_name: php_app
+      dockerfile: Dockerfile
+    container_name: php_lab
     volumes:
       - ./src:/var/www/html
     networks:
@@ -16,9 +16,9 @@ services:
   # Nginx сервис
   nginx:
     image: nginx:latest
-    container_name: nginx_app
+    container_name: nginx_lab
     ports:
-      - "80:80"
+      - "81:80"
     volumes:
       - ./src:/var/www/html
       - ./nginx/conf.d:/etc/nginx/conf.d
