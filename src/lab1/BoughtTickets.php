@@ -26,7 +26,7 @@ final class BoughtTickets
                 $this->boughtTickets = (int)$boughtTickets;
                 break;
             } catch (InvalidArgumentException $e) {
-                echo "\n" . 'Неверно введены данные! Убедитесь, что вы ввели целое положительное число' . "\n";
+                echo "\nНеверно введены данные! Убедитесь, что вы ввели целое положительное число\n";
                 echo $e->getMessage() . "\n";
                 $count++;
                 if ($count >= 10) {

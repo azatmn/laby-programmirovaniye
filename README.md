@@ -4,11 +4,9 @@
 
 Основные файлы находятся в папке:
 
-- `src/laby programmirovaniye/`
+- `src/`
 
 ## Структура
 
-- `src/laby programmirovaniye/` — лабораторные работы
-- `src/index.php`, `src/test.php` — вспомогательные файлы
+- `src/` — лабораторные работы
 - `docker-compose.yml`, `Dockerfile.php` — конфигурация Docker
-- `.gitignore` — исключения для Git
