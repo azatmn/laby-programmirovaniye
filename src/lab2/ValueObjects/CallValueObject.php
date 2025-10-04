@@ -1,18 +1,18 @@
 <?php
-require_once 'UsernameCall.php';
-require_once 'City.php';
-require_once 'MinuteChecker.php';
-class Call
+require_once __DIR__ . '/../Validators/UserNameCallValidator.php';
+require_once __DIR__ . '/../Validators/CityValidator.php';
+require_once __DIR__ . '/../Validators/MinuteValidator.php';
+class CallValueObject
 {
-    private UsernameCall $username;
-    private City $city;
-    private MinuteChecker $minutes;
+    private UserNameCallValidator $userName;
+    private CityValidator $city;
+    private MinuteValidator $minutes;
 
-    public function __construct()
+    public function __construct(array $userNames, array $cityNames)
     {
         try {
-            $this->setUsername();
-            $this->setCity();
+            $this->setUserName($userNames);
+            $this->setCity($cityNames);
             $this->setMinutes();
             echo "Звонок успешно совершен\n";
         } catch (Exception $e) {
@@ -23,17 +23,16 @@ class Call
     /**
      * @throws Exception
      */
-    private function setUsername(): void
+    private function setUserName($userNames): void
     {
         $count = 0;
-        global $users;
         do {
-            $username = (string)readline(
+            $userName = (string)readline(
                 'Введите пользователя, совершающего звонок (' .
-                implode(', ', getUsernames($users)) . '): '
+                implode(', ', $userNames) . '): '
             );
             try {
-                $this->username = new UsernameCall($username);
+                $this->userName = new UserNameCallValidator($userName, $userNames);
                 break;
             } catch (InvalidArgumentException $e) {
                 echo $e->getMessage();
@@ -48,17 +47,16 @@ class Call
     /**
      * @throws Exception
      */
-    private function setCity(): void
+    private function setCity($cityNames): void
     {
-        global $cities;
         $count = 0;
         do {
             $city = (string)readline(
                 "Выбирете город, в который хотите позвонить \n(" .
-                implode(', ', array_keys($cities)) . '): '
+                implode(', ', $cityNames) . '): '
             );
             try {
-                $this->city = new City($city);
+                $this->city = new CityValidator($city, $cityNames);
                 break;
             } catch (InvalidArgumentException $e) {
                 echo $e->getMessage();
@@ -79,7 +77,7 @@ class Call
         do {
             $minutes = (string)readline('Введите сколько минут будет идти звонок: ');
             try {
-                $this->minutes = new MinuteChecker($minutes);
+                $this->minutes = new MinuteValidator($minutes);
                 break;
             } catch (InvalidArgumentException $e) {
                 echo $e->getMessage();
@@ -91,9 +89,9 @@ class Call
         } while (true);
     }
 
-    public function getUsername(): string
+    public function getUserName(): string
     {
-        return $this->username->getValue();
+        return $this->userName->getValue();
     }
 
     public function getCity(): string

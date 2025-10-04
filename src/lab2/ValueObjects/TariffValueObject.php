@@ -1,20 +1,30 @@
 <?php
-require 'PricePerMinute.php';
-class Tariff
+require_once __DIR__ . '/../Validators/PricePerMinuteValidator.php';
+class TariffValueObject
 {
-//    private int $id;
     private string $name;
-    private PricePerMinute $pricePerMinute;
+    private PricePerMinuteValidator $pricePerMinute;
 
+    /**
+     * @throws Exception
+     */
     public function __construct($name)
     {
-        $this->name = $name;
+        $this->setName($name);
         try {
             $this->setPricePerMinute();
             echo "Тариф успешно добавлен\n" . "\n";
         } catch (Exception $e) {
             echo $e->getMessage() . "\n";
         }
+    }
+
+    /**
+     * @throws Exception
+     */
+
+    private function setName($name): void {
+        $this->name = $name;
     }
 
     /**
@@ -28,7 +38,7 @@ class Tariff
                 "Введите цену за минуту для тарифа '$this->name': "
             );
             try {
-                $this->pricePerMinute = new PricePerMinute($pricePerMinute);
+                $this->pricePerMinute = new PricePerMinuteValidator($pricePerMinute);
                 break;
             } catch (InvalidArgumentException $e) {
                 echo $e->getMessage() . "\n";

@@ -1,16 +1,15 @@
 <?php
-class City
+class CityValidator
 {
     private string $city;
-    public function __construct($city)
+    public function     __construct(string $city, array $cityNames)
     {
         if (empty($city)) {
             throw new InvalidArgumentException(
-                "City can not be empty\n"
+                "CityValidator can not be empty\n"
             );
         }
-        global $cities;
-        if (!in_array($city, array_keys($cities))) {
+        if (!in_array($city, $cityNames)) {
             throw new InvalidArgumentException(
                 "$city is not a valid city\n"
             );

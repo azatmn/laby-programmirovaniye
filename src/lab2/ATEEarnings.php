@@ -1,30 +1,22 @@
 <?php
 class ATEEarnings
 {
-    public function __construct()
+    public static function  calculateEarnings(array $destinationCitiesAndMinutes,
+                                              array $tariffs, array $cities): void
     {
-        $this->calculateEarnings();
-    }
-
-    private function calculateEarnings(): void
-    {
-        global $users;
-        global $calls;
-        global $tariffs;
-        global $cities;
         $price = 0;
-        foreach ($calls as $call) {
-            $destinationCity = $call->getCity();
-            $minutes = $call->getMinutes();
-            $originCity = $users[$call->getUsername()]->getCity();
+        foreach ($destinationCitiesAndMinutes as $destinationCityAndMinutes) {
+            $destinationCity = $destinationCityAndMinutes['destinationCity'];
+            $minutes = $destinationCityAndMinutes['minutes'];
+            $originCity = $destinationCityAndMinutes['originCity'];
             if ($originCity === $destinationCity) {
-                $pricePerMinute = $tariffs[EnumTariffTypes::Local->value]->getPricePerMinute();
+                $pricePerMinute = $tariffs[TariffTypeEnum::Local->value];
             }
             else if ($cities[$originCity] === $cities[$destinationCity]) {
-                $pricePerMinute = $tariffs[EnumTariffTypes::National->value]->getPricePerMinute();
+                $pricePerMinute = $tariffs[TariffTypeEnum::National->value];
             }
             else {
-                $pricePerMinute = $tariffs[EnumTariffTypes::International->value]->getPricePerMinute();
+                $pricePerMinute = $tariffs[TariffTypeEnum::International->value];
             }
             $price += $pricePerMinute * $minutes;
         }

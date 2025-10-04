@@ -1,12 +1,12 @@
 <?php
-class Number
+class NumberValidator
 {
     private string $number;
-    public function __construct($number)
+    public function __construct(string $number, array $numbers)
     {
         if (empty($number)) {
             throw new InvalidArgumentException(
-                "Number can't be empty\n"
+                "NumberValidator can't be empty\n"
             );
         }
         if (!ctype_digit($number)) {
@@ -14,10 +14,9 @@ class Number
                 "number $number does not exist\n"
             );
         }
-        global $users;
-        if (in_array($number, getNumbers($users))) {
+        if (in_array($number, $numbers)) {
             throw new InvalidArgumentException(
-                "Number $number already exists\n"
+                "NumberValidator $number already exists\n"
             );
         }
         $this->number = $number;

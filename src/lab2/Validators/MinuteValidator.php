@@ -1,5 +1,5 @@
 <?php
-class MinuteChecker
+class MinuteValidator
 {
     private int $minutes;
 

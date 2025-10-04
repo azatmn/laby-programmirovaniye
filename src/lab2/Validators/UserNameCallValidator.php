@@ -1,20 +1,19 @@
 <?php
-class UsernameCall
+class UserNameCallValidator
 {
     private string $name;
 
     /**
      * @throws Exception
      */
-    public function __construct($name)
+    public function __construct(string $name, array $userNames)
     {
         if (empty($name)) {
             throw new InvalidArgumentException(
                 "Name can not be empty\n"
             );
         }
-        global $users;
-        if (!in_array($name, getUserNames($users))) {
+        if (!in_array($name, $userNames)) {
             throw new InvalidArgumentException(
                 "There is no such user\n"
             );

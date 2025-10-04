@@ -1,5 +1,5 @@
 <?php
-class PricePerMinute
+class PricePerMinuteValidator
 {
     private float $pricePerMinute;
 

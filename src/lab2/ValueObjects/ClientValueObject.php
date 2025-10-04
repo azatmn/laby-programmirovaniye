@@ -1,19 +1,19 @@
 <?php
-require_once 'NewUsername.php';
-require_once 'Number.php';
-require_once 'City.php';
-class Client
+require_once __DIR__ . '/../Validators/UserNameValidator.php';
+require_once __DIR__ . '/../Validators/NumberValidator.php';
+require_once __DIR__ . '/../Validators/CityValidator.php';
+class ClientValueObject
 {
-    private NewUsername $name;
-    private Number $number;
-    private City $city;
+    private UserNameValidator $name;
+    private NumberValidator $number;
+    private CityValidator $city;
 
-    public function __construct()
+    public function __construct(array $userNames, array $numbers, array $cityNames)
     {
         try {
-            $this->setName();
-            $this->setNumber();
-            $this->setCity();
+            $this->setName($userNames);
+            $this->setNumber($numbers);
+            $this->setCity($cityNames);
             echo "Клиент успешно добавлен\n" . "\n";
         } catch (Exception $e) {
             echo $e->getMessage() . "\n";
@@ -23,13 +23,13 @@ class Client
     /**
      * @throws Exception
      */
-    private function setName(): void
+    private function setName($userNames): void
     {
         $count = 0;
         do {
             $name = (string)readline('Введите имя: ');
             try {
-                $this->name = new NewUsername($name);
+                $this->name = new UserNameValidator($name, $userNames);
                 break;
             } catch (InvalidArgumentException $e) {
                 echo $e->getMessage();
@@ -44,13 +44,13 @@ class Client
     /**
      * @throws Exception
      */
-    private function setNumber(): void
+    private function setNumber($numbers): void
     {
         $count = 0;
         do {
             $number = (string)readline('Введите номер телефона: ');
             try {
-                $this->number = new Number($number);
+                $this->number = new NumberValidator($number, $numbers);
                 break;
             } catch (InvalidArgumentException $e) {
                 echo $e->getMessage();
@@ -65,17 +65,16 @@ class Client
     /**
      * @throws Exception
      */
-    private function setCity(): void
+    private function setCity($cityNames): void
     {
         $count = 0;
-        global $cities;
         do {
             $city = (string)readline(
                 'Введите город проживания (' .
-                implode(', ', array_keys($cities)) . '): '
+                implode(', ', $cityNames) . '): '
             );
             try {
-                $this->city = new City($city);
+                $this->city = new CityValidator($city, $cityNames);
                 break;
             } catch (InvalidArgumentException $e) {
                 echo $e->getMessage();

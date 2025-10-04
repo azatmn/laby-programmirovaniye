@@ -1,31 +1,19 @@
 <?php
-//require_once 'Tariff.php';
 class ClientExpenses
 {
-    private string $originCity;
-    private array $destinationCitiesAndMinutes;
-
-    public function __construct($originCity, $destinationCitiesAndMinutes)
+    static public function calculateClientSpending(string $originCity, array $destinationCitiesAndMinutes,
+                                                   array $cities, array $tariffs): void
     {
-        $this->originCity = $originCity;
-        $this->destinationCitiesAndMinutes = $destinationCitiesAndMinutes;
-        $this->calculateClientSpending();
-    }
-
-    private function calculateClientSpending(): void
-    {
-        global $cities;
-        global $tariffs;
         $price = 0;
-        foreach ($this->destinationCitiesAndMinutes as $destinationCityAndMinutes) {
-            if ($destinationCityAndMinutes['destinationCity'] == $this->originCity) {
-                $pricePerMinute = $tariffs[EnumTariffTypes::Local->value]->getPricePerMinute();
+        foreach ($destinationCitiesAndMinutes as $destinationCityAndMinutes) {
+            if ($destinationCityAndMinutes['destinationCity'] === $originCity) {
+                $pricePerMinute = $tariffs[TariffTypeEnum::Local->value];
             }
-            else if ($cities[$destinationCityAndMinutes['destinationCity']] == $cities[$this->originCity]) {
-                $pricePerMinute = $tariffs[EnumTariffTypes::National->value]->getPricePerMinute();
+            else if ($cities[$destinationCityAndMinutes['destinationCity']] === $cities[$originCity]) {
+                $pricePerMinute = $tariffs[TariffTypeEnum::National->value];
             }
             else {
-                $pricePerMinute = $tariffs[EnumTariffTypes::International->value]->getPricePerMinute();
+                $pricePerMinute = $tariffs[TariffTypeEnum::International->value];
             }
             $price += $pricePerMinute * $destinationCityAndMinutes['minutes'];
         }

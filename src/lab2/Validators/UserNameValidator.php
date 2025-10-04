@@ -1,16 +1,15 @@
 <?php
-class NewUsername
+class UserNameValidator
 {
     private string $name;
-    public function __construct($name)
+    public function __construct(string $name, array $userNames)
     {
-        global $users;
         if (empty($name)) {
             throw new InvalidArgumentException(
                 "Username can't be empty\n"
             );
         }
-        if (in_array($name, getUserNames($users))) {
+        if (in_array($name, $userNames)) {
             throw new InvalidArgumentException(
                 "Username $name already exists\n"
             );
